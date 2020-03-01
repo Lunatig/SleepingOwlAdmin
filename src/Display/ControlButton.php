@@ -17,6 +17,11 @@ class ControlButton extends ControlLink
     protected $method = 'post';
 
     /**
+     * @var bool
+     */
+    protected $confirm = false;
+
+    /**
      * @param string $method
      *
      * @return $this
@@ -37,6 +42,26 @@ class ControlButton extends ControlLink
     }
 
     /**
+     * @param $confirm
+     *
+     * @return $this
+     */
+    public function setConfirm( $confirm  )
+    {
+        $this->confirm = $confirm;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConfirm(  )
+    {
+        return $this->confirm;
+    }
+
+    /**
      * Get the instance as an array.
      *
      * @return array
@@ -45,6 +70,8 @@ class ControlButton extends ControlLink
     {
         return parent::toArray() + [
             'method' => $this->getMethod(),
+
+            'confirm' => $this->getConfirm()
         ];
     }
 }

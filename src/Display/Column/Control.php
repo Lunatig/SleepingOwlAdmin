@@ -64,9 +64,15 @@ class Control extends TableColumn
     {
         parent::initialize();
 
-        $this->buttons->put('edit', $button = new ControlLink(function (Model $model) {
-            return $this->getModelConfiguration()->getEditUrl($model->getKey());
-        }, (string) trans('sleeping_owl::lang.button.edit'), 100));
+        $this->buttons->put(
+            'edit',
+            $button = new ControlLink(
+                function (Model $model) {
+                    return $this->getModelConfiguration()->getEditUrl($model->getKey());
+                },
+                (string) trans('sleeping_owl::lang.button.edit'), 100
+            )
+        );
         $button->hideText();
         $button->setCondition(function () {
             return $this->isEditable();
@@ -81,10 +87,11 @@ class Control extends TableColumn
             return $this->isDeletable();
         });
 
-        $button->setMethod('delete');
-        $button->hideText();
-        $button->setIcon('fas fa-trash-alt');
-        $button->setHtmlAttribute('class', 'btn-danger btn-delete');
+        $button->setMethod('delete')
+               ->setConfirm(trans('sleeping_owl::lang.table.destroy-confirm'))
+               ->hideText()
+               ->setIcon('fas fa-trash-alt')
+               ->setHtmlAttribute('class', 'btn-danger btn-delete');
 
         $this->buttons->put('destroy', $button = new ControlButton(function (Model $model) {
             return $this->getModelConfiguration()->getDestroyUrl($model->getKey());
@@ -93,10 +100,11 @@ class Control extends TableColumn
             return $this->isDestroyable();
         });
 
-        $button->setMethod('delete');
-        $button->hideText();
-        $button->setIcon('fas fa-trash-alt');
-        $button->setHtmlAttribute('class', 'btn-danger btn-destroy');
+        $button->setMethod('delete')
+               ->setConfirm(trans('sleeping_owl::lang.table.delete-confirm'))
+               ->hideText()
+               ->setIcon('fas fa-trash-alt')
+               ->setHtmlAttribute('class', 'btn-danger btn-destroy');
 
         $this->buttons->put('restore', $button = new ControlButton(function (Model $model) {
             return $this->getModelConfiguration()->getRestoreUrl($model->getKey());

@@ -594,12 +594,16 @@ class AdminController extends Controller
         $model->fireDelete($id);
 
         if ($model->fireEvent('deleting', true, $item, $request) === false) {
-            return redirect()->back();
+            return $request->ajax() ? null : redirect()->back();
         }
 
         $model->getRepository()->delete($id);
 
         $model->fireEvent('deleted', false, $item, $request);
+
+        if( $request->ajax()) {
+            return [ 'message' =>  $model->getMessageOnDelete() ];
+        }
 
         return redirect($request->input('_redirectBack', back()->getTargetUrl()))
             ->with('success_message', $model->getMessageOnDelete());
@@ -629,12 +633,16 @@ class AdminController extends Controller
         $model->fireDestroy($id);
 
         if ($model->fireEvent('destroying', true, $item, $request) === false) {
-            return redirect()->back();
+            return $request->ajax() ? null : redirect()->back();
         }
 
         $model->getRepository()->forceDelete($id);
 
         $model->fireEvent('destroyed', false, $item, $request);
+
+        if( $request->ajax()) {
+            return [ 'message' =>  $model->getMessageOnDestroy() ];
+        }
 
         return redirect($request->input('_redirectBack', back()->getTargetUrl()))
             ->with('success_message', $model->getMessageOnDestroy());
@@ -664,15 +672,19 @@ class AdminController extends Controller
         $model->fireRestore($id);
 
         if ($model->fireEvent('restoring', true, $item, $request) === false) {
-            return redirect()->back();
+            return $request->ajax() ? null : redirect()->back();
         }
 
         $model->getRepository()->restore($id);
 
         $model->fireEvent('restored', false, $item, $request);
 
+        if( $request->ajax()) {
+            return [ 'message' =>  $model->getMessageOnRestore() ];
+        }
+
         return redirect($request->input('_redirectBack', back()->getTargetUrl()))
-            ->with('success_message', $model->getMessageOnRestore());
+                ->with('success_message', $model->getMessageOnRestore());
     }
 
     /**

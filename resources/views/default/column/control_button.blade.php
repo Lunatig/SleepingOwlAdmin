@@ -1,4 +1,4 @@
-<form action="{{ $url }}" method="POST" style="display:inline-block;">
+<form action="{{ $url }}" method="POST" style="display:inline-block;" data-confirm="{{ $confirm }}">
     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
     <input type="hidden" name="_method" value="{{ $method }}" />
     <button {!! $attributes !!}>
